@@ -8,7 +8,6 @@ import java.util.Stack;
 
 public class Main {
 	private static Stack<Integer> operandStack = new Stack<Integer>();
-	private static LinkedList<String> operationQueue = new LinkedList<String>();
 	
 	public static void main(String[] args) {
 		while (true) {
@@ -16,8 +15,8 @@ public class Main {
 				
 				System.out.println("Enter operand or operation\n"  
 										+ " or 'exit'  command to exit\n"
-										+ " or 'clear' command to clear stack and queue\n"
-										+ " or 'print' command to print stack and queue");
+										+ " or 'clear' command to clear stack\n"
+										+ " or 'print' command to print stack");
 				
 				String line = new BufferedReader(new InputStreamReader(System.in)).readLine();
 				if (line.trim().equals("exit")) {
@@ -25,12 +24,10 @@ public class Main {
 				}
 				else if (line.trim().equals("clear")) {
 					operandStack.clear();
-					operationQueue.clear();
 					continue;
 				}
 				else if (line.trim().equals("print")) {
 					printStack();
-					printQueue();
 					continue;
 				}
 				else {
@@ -46,9 +43,9 @@ public class Main {
 						operandFound = false;
 					}
 					
-					if(containsOperation(line)) {
+					String operation = line.trim();
+					if(containsOperation(operation)) {
 						operationFound = true;
-						operationQueue.addLast(line.trim());
 					}
 					else {
 						operationFound = false;
@@ -66,7 +63,6 @@ public class Main {
 					
 					int result = 0;
 					int secondOperand = 0;
-					String operation = operationQueue.removeFirst();
 					if (operation.equals("+")) {
 						result = operandStack.pop() + operandStack.pop();
 					}
@@ -111,24 +107,11 @@ public class Main {
 		System.out.print("\n");
 	}
 	
-	public static void printQueue() {
-		if(operationQueue.size() == 0) {
-			System.out.println("Operation queue is empty");
-			return;
-		}
-		System.out.println("Operations:");
-		Iterator<String> it = operationQueue.iterator();
-		while(it.hasNext()) {
-			System.out.print(it.next() + " ");
-		}
-		System.out.print("\n");
-	}
-	
-	public static boolean containsOperation(String line) {
-		if (line.trim().equals("+") || 
-			line.trim().equals("-") ||
-			line.trim().equals("*") ||
-			line.trim().equals("/")) {
+	public static boolean containsOperation(String operation) {
+		if (operation.equals("+") || 
+			operation.equals("-") || 
+			operation.equals("*") || 
+			operation.equals("/")) {
 			return true;
 		}
 		return false;
